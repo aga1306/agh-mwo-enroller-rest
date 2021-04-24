@@ -22,8 +22,6 @@ public class ParticipantRestController {
 	@Autowired
 	ParticipantService participantService;
 
-	@Autowired
-	ParticipantService meetingService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	// GET //http://localhost:8080/participants
@@ -44,13 +42,13 @@ public class ParticipantRestController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	// GET //http://localhost:8080/participants
+	// POST //http://localhost:8080/participants
 	public ResponseEntity<?> registerParticipant(@RequestBody Participant participant) {
-		if (participantService.findByLogin(participant.getLogin()) != null)
+		if (participantService.findByLogin(participant.getLogin()) != null) {
 			return new ResponseEntity(
 					"Unable to create. A participant with login " + participant.getLogin() + "already exist",
 					HttpStatus.CONFLICT);
-
+		}
 		participantService.add(participant);
 		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
 
@@ -80,4 +78,5 @@ public class ParticipantRestController {
 		return new ResponseEntity<Participant>(foundParticipant, HttpStatus.OK);
 		
 }
+
 }
